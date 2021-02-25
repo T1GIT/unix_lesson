@@ -1,12 +1,32 @@
 import socket
 
 sock = socket.socket()
-sock.connect(('localhost', 9090))
-print("Server connected")
+print("Socket created")
 
 while True:
+    host = input("Type host: ")
+    if host == "": host = "localhost"
+
+    while True:
+        port = input("Type port: ")
+        if port == "": port = 8080
+        if port.isdigit() and 0 < int(port) < 65535:
+            break
+        else:
+            print("Incorrect port number")
+
+    try:
+        sock.connect((host, int(port)))
+        print("Server connected")
+        break
+    except socket.gaierror:
+        print("Something went wrong")
+
+is_running = True
+
+while is_running:
     data = input("Type text: ")
-    if data == "exit": break
+    if data == "exit": is_running = False
     sock.send(data.encode('utf-8'))
     print("Data sent " + str(data.encode('utf-8')))
     receive_data = sock.recv(1024)
