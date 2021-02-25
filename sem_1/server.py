@@ -1,7 +1,7 @@
 import errno
 import socket
 import logging
-from datetime import datetime
+
 
 def get_logger():
     logger = logging.getLogger("server")
@@ -11,6 +11,22 @@ def get_logger():
     file_hanlder.setFormatter(formatter)
     logger.addHandler(file_hanlder)
     return logger
+
+
+def normalise_port(sock, port):
+    while port < 65535:
+        if port > 65535:
+            raise AssertionError("All ports are in used")
+        try:
+            sock.bind(("", int(port)))
+            break
+        except socket.error as e:
+            if e.errno == errno.EADDRINUSE:
+                port += 1
+    if port == 65535:
+        raise AssertionError("All ports are in used")
+    else:
+        return port
 
 
 users = dict()
@@ -27,17 +43,7 @@ while True:
     else:
         print("Incorrect port number")
 
-port = int(port)
-
-while True:
-    if port > 65535:
-        raise AssertionError("All ports are in used")
-    try:
-        sock.bind(("", int(port)))
-        break
-    except socket.error as e:
-        if e.errno == errno.EADDRINUSE:
-            port += 1
+normalise_port(sock, int(port))
 
 is_running = True
 
@@ -48,10 +54,11 @@ while is_running:
     logger.info("Client connected " + str(addr))
     is_connected = True
 
-    name = conn.recv(1024).decode('utf-8')
     user_port = addr[1]
     if user_port in users:
-
+        conn.send("Hello, " + users[user_port])
+    else:
+        name = conn.recv(1024).decode('utf-8')
         users.update({addr[1], name})
 
     while is_connected:
@@ -72,3 +79,8 @@ while is_running:
     logger.info("Socket was closed")
 
 logger.info("Server is shutting down")
+
+
+
+
+
