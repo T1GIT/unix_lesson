@@ -22,6 +22,7 @@ if __name__ == "__main__":
 
     while True:
         conn, addr = sock.accept()
+        print(dict)
         thread = Thread(target=socket_listen, args=[conn, addr])
         threads[addr[1]] = thread
         thread.start()

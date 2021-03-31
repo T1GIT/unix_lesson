@@ -9,8 +9,11 @@ while True:
 
     while True:
         port = input("Type port: ")
-        if port == "": port = 8080
-        if port.isdigit() and 0 < int(port) < 65535:
+        if port == "":
+            port = 8080
+            break
+        elif port.isdigit() and 0 < int(port) < 65535:
+            port = int(port)
             break
         else:
             print("Incorrect port number")
@@ -23,6 +26,12 @@ while True:
         print("Something went wrong")
 
 is_running = True
+
+init = sock.recv(1024)
+if init == b"NONE":
+    sock.send(input("Input name: ").encode("utf-8"))
+else:
+    print(init.decode("utf-8"))
 
 while is_running:
     data = input("Type text: ")

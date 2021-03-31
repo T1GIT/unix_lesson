@@ -37,13 +37,16 @@ logger.info("Server started")
 
 while True:
     port = input("Type port: ")
-    if port == "": port = 8080
-    if port.isdigit() and 0 < int(port) < 65535:
+    if port == "":
+        port = 8080
+        break
+    elif port.isdigit() and 0 < int(port) < 65535:
+        port = int(port)
         break
     else:
         print("Incorrect port number")
 
-normalise_port(sock, int(port))
+normalise_port(sock, port)
 
 is_running = True
 
@@ -56,10 +59,11 @@ while is_running:
 
     user_port = addr[1]
     if user_port in users:
-        conn.send("Hello, " + users[user_port])
+        conn.send(bytes("Hello, " + users[user_port]))
     else:
+        conn.send(b"NONE")
         name = conn.recv(1024).decode('utf-8')
-        users.update({addr[1], name})
+        users.update({addr[1]: name})
 
     while is_connected:
         data = conn.recv(1024)

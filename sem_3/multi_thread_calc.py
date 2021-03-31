@@ -144,7 +144,7 @@ def test(size: int, dest_path: str):
 if __name__ == "__main__":
     DEST = "dest/res.txt"
 
-    test(200, DEST)
+    test(1000, DEST)
 
     # calc_mx(DEST,
     #         parse_mx("src/one"),
