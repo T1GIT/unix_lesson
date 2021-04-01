@@ -96,8 +96,7 @@ def start_workers(cache_path: str, m1: np.ndarray, m2: np.ndarray, threads: int 
     for row in range(ver_size):
         for col in range(hor_size):
             proc_list.append(
-                pool.apply_async(
-                    calc_and_cache_el, (cache_path, m1, m2, row, col)))
+                pool.apply_async(calc_and_cache_el, (cache_path, m1, m2, row, col)))
     return proc_list
 
 
@@ -144,7 +143,7 @@ def test(size: int, dest_path: str):
 if __name__ == "__main__":
     DEST = "dest/res.txt"
 
-    test(1000, DEST)
+    test(100, DEST)
 
     # calc_mx(DEST,
     #         parse_mx("src/one"),

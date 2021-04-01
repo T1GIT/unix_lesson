@@ -1,0 +1,19 @@
+2021-03-31 11:20:18,756 - server - INFO - Server started
+2021-03-31 11:20:53,073 - server - INFO - Server is listening on port 8080
+2021-03-31 11:21:42,724 - server - INFO - Server started
+2021-03-31 11:21:49,176 - server - INFO - Server started
+2021-03-31 11:23:07,278 - server - INFO - Server started
+2021-03-31 11:23:11,569 - server - INFO - Server is listening on port 8080
+2021-03-31 11:23:39,736 - server - INFO - Server started
+2021-03-31 11:23:42,241 - server - INFO - Server is listening on port 8080
+2021-03-31 11:24:08,989 - server - INFO - Server started
+2021-03-31 11:24:11,093 - server - INFO - Server is listening on port 8080
+2021-03-31 11:25:00,818 - server - INFO - Client connected ('127.0.0.1', 9094)
+2021-03-31 11:25:22,182 - server - INFO - Server started
+2021-03-31 11:25:24,120 - server - INFO - Server is listening on port 8080
+2021-03-31 11:25:45,244 - server - INFO - Client connected ('127.0.0.1', 9237)
+2021-03-31 11:28:12,005 - server - INFO - Server started
+2021-03-31 11:28:15,056 - server - INFO - Server is listening on port 8080
+2021-03-31 11:28:22,565 - server - INFO - Client connected ('127.0.0.1', 9310)
+2021-03-31 11:28:25,834 - server - INFO - Data received b'jefj'
+2021-03-31 11:28:25,834 - server - INFO - Data sent b'JEFJ'
