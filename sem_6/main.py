@@ -1,3 +1,4 @@
+import math
 import random as rnd
 
 
@@ -20,8 +21,12 @@ def cesar_hack(crypted: str) -> str:
     return cesar_encrypt(crypted, ord(' ') - ord(max(chars, key=chars.get)))
 
 
+def vigner(text: str, key: str) -> str:
+    return "".join(map(lambda k, c: chr((ord(c) + ord(k)) % 65536), repeat_gen(key), text))
+
+
 def vernom(text: str, key: str) -> str:
-    return "".join(map(lambda k, c: chr(ord(k) ^ ord(c)), repeat_gen(key), text))
+    return "".join(map(lambda k, c: chr(ord(c) ^ ord(k)), text, repeat_gen(key)))
 
 
 def otp(text: str) -> tuple[str, str]:
@@ -29,37 +34,46 @@ def otp(text: str) -> tuple[str, str]:
     return vernom(text, key), key
 
 
-def blockchain(text: str, key: str, block_len: int = 5) -> tuple[str, str]:
+def blockchain(text: str, func: callable, key, block_len: int = 5) -> tuple[str, str]:
     res = []
     v = rnd_key(block_len)
     blocks = [text[i:i+block_len] for i in range(0, len(text), block_len)]
-    res.append(vernom(vernom(blocks.pop(0), v), key))
-    for block in blocks:
-        res.append(vernom(vernom(block, res[-1]), key))
+    res.append(func(vernom(blocks.pop(0), v), key))
+    while len(blocks) > 0:
+        res.append(func(vernom(blocks.pop(0), res[-1]), key))
     return "".join(res), v
 
 
+def blockchain_rev(text: str, v: str, de_func: callable, key, block_len: int = 5) -> str:
+    res = []
+    blocks = [text[i:i+block_len] for i in range(0, len(text), block_len)]
+    while len(blocks) > 1:
+        res.append(vernom(de_func(blocks.pop(-1), key), blocks[-1]))
+    res.append(vernom(de_func(blocks.pop(-1), key), v))
+    return "".join(reversed(res))
+
+
 def feistel_cell(text: str, func: callable, K) -> str:
-    assert len(text) % 2 == 0
-    L = text[:len(text) // 2]
-    R = text[len(text) // 2:]
+    sep = math.ceil(len(text) / 2)
+    L = text[:sep]
+    R = text[sep:]
     return R + vernom(func(L, K), R)
 
 
-def feistel_cell_rev(text: str, func: callable, K) -> str:
-    assert len(text) % 2 == 0
-    L = text[:len(text) // 2]
-    R = text[len(text) // 2:]
-    return func(vernom(R, L), K) + L
+def feistel_cell_rev(text: str, de_func: callable, K) -> str:
+    sep = math.ceil(len(text) / 2)
+    L = text[:sep]
+    R = text[sep:]
+    return de_func(vernom(R, L), K) + L
 
 
-def feistel_web(text: str, func: callable, K, iterations: int) -> str:
+def feistel_web(crypted: str, func: callable, K, iterations: int) -> str:
     for _ in range(iterations):
-        text = feistel_cell(text, func, K)
-    return text
+        crypted = feistel_cell(crypted, func, K)
+    return crypted
 
 
-def feistel_web_rev(text: str, func: callable, K, iterations: int) -> str:
+def feistel_web_rev(crypted: str, de_func: callable, K, iterations: int) -> str:
     for _ in range(iterations):
-        text = feistel_cell_rev(text, func, K)
-    return text
+        crypted = feistel_cell_rev(crypted, de_func, K)
+    return crypted
