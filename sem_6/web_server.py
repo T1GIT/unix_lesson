@@ -1,10 +1,6 @@
 import socket
 from threading import Thread
 import logging
-from urllib3.response import HTTPResponse
-
-import requests
-
 from config import HOST, PORT, ENC, POOL
 from controller import PageNotFoundException, MethodNotAllowedException, Controller
 from request import Response, Request, EmptyRequest

@@ -46,7 +46,6 @@ class Controller:
                 self.map_dict[path][method] = func
             self.map_dict[path] = {method: func}
             return func
-
         return wrap
 
     def request(self, req: Request, res: Response):
@@ -61,7 +60,6 @@ class Controller:
         else:
             if req.url.startswith(STATIC) and req.method == "GET":
                 self.send_static(req, res)
-
                 res.headers["Content-Length"] = len(res.body)
             else:
                 raise PageNotFoundException()
