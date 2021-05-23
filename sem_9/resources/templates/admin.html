@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script defer rel="script" type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script defer src="../static/admin.js" type="text/javascript" rel="script"></script>
+    <title>Admin</title>
+</head>
+<body>
+
+<h2>User details</h2>
+
+<ul>
+    <li>Email: {{ current_user.email }}</li>
+    <li>Password hash: {{ current_user.psw_hash }}</li>
+    <li>Password salt: {{ current_user.psw_salt }}</li>
+    <li>Created on: {{ current_user.reg_date }}</li>
+</ul>
+
+<p><a href="{{ url_for('logout') }}">Logout</a></p>
+
+<hr>
+<label for="taskSelector">Task: </label>
+<select id="taskSelector"></select>
+<br><br>
+<button id="addBtn">Добавить</button>
+<button id="editBtn">Изменить</button>
+<button id="delBtn">Удалить</button>
+
+</body>
+</html>
